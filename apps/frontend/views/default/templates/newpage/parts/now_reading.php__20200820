@@ -1,0 +1,198 @@
+<div class="card bg-light" id="BrowseDewey">
+    <div class="card-header bg-gray-dark head nice-font">
+        <div class="row no-gutters">
+            <?php if (OppAlign ==  "left"): ?>
+                    <i class="fa fa-caret-<?php echo OppAlign; ?>"></i> &nbsp; <?php echo "شركاء المحتوي الرقمي" ?>
+            <?php else: ?>
+                    <i class="fa fa-caret-<?php echo OppAlign; ?>"></i> &nbsp; <?php echo "Digital Contents Providers" ?>
+            <?php endif ?>
+        </div>
+    </div>
+
+    <div class="list-group list-group-flush" id="BrowseDewey_container">
+        <ul class="footer_links" style="list-style-type:none;padding:10px">
+            <li>
+                <a href="/search/results/1?sources=65">
+                    <i class="fa fa-caret-<?php echo OppAlign; ?> text-info"></i> مركز محمد بن راشد للفضاء
+                </a>
+            </li>
+            <li>
+                <a href="/search/results/1?sources=60">
+                    <i class="fa fa-caret-<?php echo OppAlign; ?> text-info"></i> مركز حمدان بن محمد لإحياء التراث
+                </a>
+            </li>
+            <li>
+                <a href="/search/results/1?sources=110">
+                    <i class="fa fa-caret-<?php echo OppAlign; ?> text-info"></i>  دبي الذكية 
+                </a>
+            </li>
+            <li>
+                <a href="/search/results/1?sources=113">
+                    <i class="fa fa-caret-<?php echo OppAlign; ?> text-info"></i> بلدية دبي
+                </a>
+            </li>
+            <li>
+                <a href="/search/results/1?sources=85">
+                    <i class="fa fa-caret-<?php echo OppAlign; ?> text-info"></i> موانئ دبي العالمية
+                </a>
+            </li>
+            <li>
+                <a href="/search/results/1?sources=77">
+                    <i class="fa fa-caret-<?php echo OppAlign; ?> text-info"></i> هيئة الموارد البشرية
+                </a>
+            </li>
+
+            <li>
+                <a href="/search/results/1?sources=79">
+                    <i class="fa fa-caret-<?php echo OppAlign; ?> text-info"></i> معهد حوكمة - مركز دبي المالي
+                </a>
+            </li>
+            <li>
+                <a href="/search/results/1?sources=104">
+                    <i class="fa fa-caret-<?php echo OppAlign; ?> text-info"></i> المجلس الاعلى للطاقة
+                </a>
+            </li>
+
+            <li>
+                <a href="/search/results/1?sources=95">
+                    <i class="fa fa-caret-<?php echo OppAlign; ?> text-info"></i> وزارة المالية
+                </a>
+            </li>
+            <li>
+                <a href="/search/results/1?sources=92">
+                    <i class="fa fa-caret-<?php echo OppAlign; ?> text-info"></i> اكاديمية شرطة دبي
+                </a>
+            </li>
+            <li>
+                <a href="/search/results/1?sources=90">
+                    <i class="fa fa-caret-<?php echo OppAlign; ?> text-info"></i> كلية الدراسات العليا - شرطة دبي
+                </a>
+            </li>
+
+            <li>
+                <a href="/search/results/1?sources=84">
+                    <i class="fa fa-caret-<?php echo OppAlign; ?> text-info"></i> سلطة مدينة دبي الملاحية
+                </a>
+            </li>
+
+            <li>
+                <a href="/search/results/1?sources=91">
+                    <i class="fa fa-caret-<?php echo OppAlign; ?> text-info"></i> اللجنة العليا للتشريعات في دبي
+                </a>
+            </li>
+            <li>
+                <a href="/search/results/1?sources=102">
+                    <i class="fa fa-caret-<?php echo OppAlign; ?> text-info"></i> معهد دبي العقاري
+                </a>
+            </li>
+
+        </ul>
+
+    </div>
+</div>
+
+
+
+
+
+<script>
+var toggler = document.getElementsByClassName("caret");
+var i;
+
+for (i = 0; i < toggler.length; i++) {
+  toggler[i].addEventListener("click", function() {
+    this.parentElement.querySelector(".nested").classList.toggle("active");
+    this.classList.toggle("caret-down");
+  });
+}
+</script>
+
+
+
+
+
+
+
+
+
+
+<div class="card bg-light" id="live_visiting">
+
+    <div class="card-header bg-gray-dark head nice-font">
+        <div class="row no-gutters">
+            <div class="col-8">
+                <a href="<?php echo base_url(front_base."live") ?>" target="_blank" class="text-dark">            
+                    <i class="fa fa-caret-<?php echo OppAlign; ?>"></i> <?php echo word("now_reading") ?>
+                </a>                    
+            </div>
+            <!--div class="col-4 text-<?php echo OppAlign; ?>">
+                <i class="fas fa-spinner fa-pulse"></i>
+            </div-->
+        </div>
+    </div>
+
+    <div class="list-group list-group-flush" id="live_visiting_container">
+        <?php foreach($latest_logs as $log){ ?>
+            
+            <?php $book = json_decode($log->log_rel_text); ?>
+        
+            <div class="list-group-item p-2 book_<?php echo $book->id ?>">
+                <div class="small">
+                    <a target="_blank" href="<?php echo base_url(front_base."book/".$book->id) ?>">
+                        <i class="fa fa-caret-<?php echo OppAlign; ?> text-info"></i> <?php echo $book->title ?>
+                    </a>
+                </div>
+                <div class="small text-muted">
+                    <i class="fa fa-clock"></i> <span class="timeago small"><?php echo date("c",$log->log_timestamp) ?></span>
+                </div>
+            </div>     
+        <?php } ?>        
+    </div>
+
+</div>
+
+<!-- Stoped By Rafie!-->
+
+<!--script src="//cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js" type="text/javascript"></script-->
+<!--script type="text/javascript">
+
+    function append_content(new_content){        
+        $(new_content).hide().prependTo('#live_visiting_container').fadeIn();           
+    }
+
+    var socket = io.connect('//socket.ddl.ae:8080',{ secure: true });
+    
+    /// Getting From Server
+    socket.emit('set_room_id', "view_book_readers" );
+    
+    socket.on('book_data', function(data) {
+        var time_now = new Date();
+        var msg = '';
+        msg += '<div class="list-group-item p-2 book_'+data.id+'">';        
+        
+        msg += '<div class="small">';        
+        msg += '<a target="_blank" href="'+data.url+'">';        
+        msg += '<i class="fa fa-caret-<?php echo OppAlign; ?> text-info"></i> ';        
+        msg += data.title;    
+        msg += '</a>';
+        msg += '</div>';        
+        
+        msg += '<div class="small text-muted">';                                               
+        msg += '<i class="fa fa-clock"></i> <span class="timeago">'+time_now+'</i>';        
+        msg += '</div>';        
+                
+        msg += '</div>';        
+        
+        if($(".book_"+data.id)[0]){                 
+            $(".book_"+data.id).remove();
+        }else{
+            $("#live_visiting_container .list-group-item:last-child").remove();
+        }                                                      
+        
+        append_content(msg);                  
+        
+        $('.timeago').cuteTime({ refresh: 1000*20 });        
+    });
+     
+    
+</script-->

@@ -1,0 +1,52 @@
+User-agent: *
+Disallow: /
+Disallow: /assets/
+Disallow: /apps/
+Disallow: /langs/
+Disallow: /logs/
+Disallow: /storage/
+Disallow: /system/
+Disallow: /tmp/
+Disallow: /uploads/
+
+
+User-agent: MJ12bot
+Disallow: /
+
+User-agent: BLEXBot
+Disallow: /
+
+User-Agent: Googlebot
+Allow: /
+
+User-Agent: Googlebot-Mobile
+Allow: /
+
+User-Agent: Googlebot-Image
+Allow: /
+
+User-Agent: Mediapartners-Google
+Allow: /
+
+User-Agent: Adsbot-Google
+Allow: /
+
+User-agent: Slurp
+Allow: /
+
+User-Agent: msnbot
+Allow: /
+
+User-Agent: msnbot-media
+Allow: /
+
+User-Agent: Teoma
+Allow: /
+
+User-agent: AhrefsBot
+Disallow: /
+
+User-agent: AhrefsSiteAudit
+Disallow: /
+
+Sitemap: https://ddl.ae/sitemap.xml

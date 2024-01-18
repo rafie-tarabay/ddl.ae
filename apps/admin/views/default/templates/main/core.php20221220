@@ -1,0 +1,7 @@
+<?php $this->load->view(style.'/templates/main/header',$data); ?>
+
+
+<?php $this->load->view(style.'/templates/'.$views['content'],$data); ?>                           
+
+
+<?php $this->load->view(style.'/templates/main/footer',$data);

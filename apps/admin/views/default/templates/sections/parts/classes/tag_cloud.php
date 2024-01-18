@@ -1,0 +1,1 @@
+<?php echo word_limiter($fields["keywords"], 20);

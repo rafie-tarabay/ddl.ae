@@ -1,0 +1,1 @@
+<a class="btn btn-success" href="<?php echo $node->action_url; ?>"><?php echo $node->action_title_ar ?></a>

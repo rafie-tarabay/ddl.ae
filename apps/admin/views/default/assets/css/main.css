@@ -1,0 +1,108 @@
+html {
+    margin:0;
+    padding:0;
+    direction:rtl
+}
+
+body {
+    overflow-y:auto;
+    overflow-x:hidden;
+    direction:rtl;
+    margin:0;
+    padding:0px 0 0 0;
+    font-weight:400;
+    font-family: 'Droid Arabic Naskh',tahoma,'Noto Sans' !important;    
+    background:#F7F7F7;
+    /*background-image: url("../images/ramadan-bg.png") ;*/
+    background-repeat: no-repeat ;
+    background-position: right top;
+    font-size:15px;               
+}
+
+.dropdown-menu-right{
+    right:auto;
+    left:0;
+}
+
+
+#main-container{
+    margin-top: 30px;
+}
+ 
+
+.req_field.red_border{
+    border-right:5px solid #e59292 !important;    
+
+}
+.req_field.green_border{
+    border-right:5px solid #9dce7c !important;
+}
+
+
+.btn-xs{
+    padding:3px 5px 1px 5px !important;   
+}
+ 
+ 
+.single_word{
+    background: #f1f1f1;
+
+    padding:5px 10px;
+    margin:10px 0;
+}
+
+.single_word:hover{
+
+    background: #F2DEDE;
+}
+
+.single_word input{
+    border:none;
+    font-size:12px !important;
+}
+
+.single_word .input-group-sm .input-group-addon{
+    padding:2px 5px;    
+}
+
+.single_word .input-group-sm input{
+    padding:2px 5px;    
+}
+
+.single_word .input-group{
+    border-bottom:1px solid #ddd;
+    margin-bottom: 2px !important;    
+}
+
+.single_word .input-group img{
+    height:16px;
+    width:20px;
+}
+
+.single_word .save_word{
+    margin:10px 0 3px 0;
+    text-align:left;
+}
+
+.ltr, .ltr *{
+    direction: ltr !important;        
+}
+
+
+.line-height-30{
+    line-height: 30px;
+}
+
+
+.pagging{
+    text-align: center !important;
+    display: inline-block !important;
+}
+
+.pagging .page-item span{
+    padding:0px;
+}
+.pagging .page-item a{
+    padding:8px 12px;
+    display: block;
+}

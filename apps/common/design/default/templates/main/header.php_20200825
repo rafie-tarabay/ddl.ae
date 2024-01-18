@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+
+<html lang="<?php echo locale; ?>">
+
+<head>
+
+
+    <meta http-equiv="Expires" content="0" />
+    <meta http-equiv="Expires" content="Tue, 01 Jan 1980 1:00:00 GMT" />
+    <meta http-equiv="Pragma" content="no-cache">
+    <base href="<?php echo base_url(); ?>" />
+    <meta http-equiv="Cache-Control" content="max-age=0" />
+    <meta http-equiv="Cache-Control" content="no-cache">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta http-equiv="Lang" content="<?php echo locale; ?>">
+    <meta name="description" content="<?php if (isset($page_desc)) {
+                                            echo strip_tags($page_desc);
+                                        } else {
+                                            echo word("site_desc");
+                                        } ?>">
+    <meta name="keywords" content="<?php echo isset($page_keywords) ? $page_keywords : word("site_keywords"); ?>">
+    <meta name="ahrefs-site-verification" content="849945017ab527d9f547e51a341ec390dbf95281eca058fff65d2b91f6a275c4">
+
+    <meta name="theme-color" content="#000000">
+
+    <meta name="twitter:card" content="DDL Tweet" />
+    <meta name="twitter:site" content="@ddl_uae" />
+    <meta name="twitter:creator" content="@ddl_uae" />
+
+    <meta property="og:url" content="https://<?php echo str_replace('//','',current_url()); ?>" />
+    
+    <meta property="og:title" content="<?php echo isset($title) && @$title ? $title . " | " . word("site_title") : word("site_title"); ?>" />
+    <meta property="og:type" content="<?php if (@$biblo_type) {
+                                                    echo $biblo_type;
+                                                } else {
+                                                    echo 'book';
+                                                } ?>" />  
+
+    <meta property="og:site_name" content="<?php echo word("site_title"); ?>" />
+    <meta property="og:description" content="<?php if (@$page_desc) {
+                                                    echo strip_tags($page_desc);
+                                                } else {
+                                                    echo word("site_desc");
+                                                } ?>" />
+    <meta property="og:image" content="<?php if (@$page_image) {
+                                                    echo $page_image;
+                                                } else {
+                                                    echo 'https://ddl.ae/uploads/no_image/no_book_cover.jpg';
+                                                } ?>" />  
+
+    <meta property="fb:app_id" content="" />
+
+    <meta name="google-site-verification" content="fOR91idyPzDqGe0gXYjzWmkOQtIRXcyCQLARsLr7msI" />
+
+    <meta http-equiv="Access-Control-Allow-Origin" content="*" />
+
+
+    <title><?php echo isset($title) && @$title ? $title . " | " . word("site_title") : word("site_title"); ?></title>
+
+    <script src="<?php echo no_protocol(base_url("assets/libs/jquery/jquery-3.3.1.min.js")); ?>"></script>
+    <script src="<?php echo no_protocol(base_url("assets/libs/bootstrap/popper.min.js?v=" . settings('refresh'))); ?>"></script>
+    <script src="<?php echo no_protocol(base_url("assets/libs/cuteTime/jquery.cuteTime-ar.js?v=" . settings('refresh'))); ?>"></script>
+
+    <link rel="stylesheet" type="text/css" href="<?php echo no_protocol(base_url("assets/fonts/fonts.css")); ?>">
+
+    <?php if (style_dir == "rtl") { ?>
+        <link rel="stylesheet" href="<?php echo no_protocol(base_url("assets/libs/bootstrap/bootstrap-rtl.min.css")); ?>">
+    <?php } else { ?>
+        <link rel="stylesheet" href="<?php echo no_protocol(base_url("assets/libs/bootstrap/bootstrap.min.css")); ?>">
+    <?php } ?>
+
+    <link rel="stylesheet" type="text/css" href="<?php echo no_protocol(base_url(design . "assets/css/main.css?v=" . settings("refresh"))); ?>">
+    <link rel="stylesheet" type="text/css" href="<?php echo no_protocol(base_url(design . "assets/css/" . style_dir . "/direction.css?v=" . settings("refresh"))); ?>">
+    <link rel="stylesheet" type="text/css" href="<?php echo no_protocol(base_url(design . "assets/css/general.css?v=" . settings("refresh"))); ?>">
+
+    <link rel="stylesheet" type="text/css" href="<?php echo no_protocol(base_url(design . "assets/css/mobile-adapt.css?v=" . settings("refresh"))); ?>">
+    <link rel="stylesheet" type="text/css" href="<?php echo no_protocol(base_url(design . "assets/css/" . style_dir . "/direction_mob.css?v=" . settings("refresh"))); ?>">
+    <link rel="stylesheet" type="text/css" href="<?php echo no_protocol(base_url("assets/libs/font_awesome/css/fontawesome-all.min.css?v=" . settings('refresh'))); ?>">
+
+    <?php if (style_dir == "rtl") { ?>
+        <script src="<?php echo no_protocol(base_url("assets/libs/bootstrap/bootstrap-rtl.min.js?v=" . settings('refresh'))); ?>"></script>
+    <?php } else { ?>
+        <script src="<?php echo no_protocol(base_url("assets/libs/bootstrap/bootstrap.min.js?v=" . settings('refresh'))); ?>"></script>
+    <?php } ?>
+
+    <script src="<?php echo no_protocol(base_url(design . "assets/js/main.js?v=" . settings("refresh"))); ?>"></script>
+    <script src="<?php echo no_protocol(base_url("assets/libs/form-validator/validator.js?v=" . settings("refresh"))); ?>"></script>
+
+
+    <link rel="stylesheet" type="text/css" href="<?php echo no_protocol(base_url("assets/libs/swiper/css/swiper.min.css?v=" . settings("refresh"))); ?>" />
+    <script src="<?php echo no_protocol(base_url("assets/libs/swiper/js/swiper.min.js?v=" . settings("refresh"))); ?>"></script>
+
+    <script src="<?php echo no_protocol(base_url("assets/libs/news_ticker/jquery.easing.min.js?v=" . settings("refresh"))); ?>"></script>
+    <script src="<?php echo no_protocol(base_url("assets/libs/news_ticker/jquery.easy-ticker.min.js?v=" . settings("refresh"))); ?>"></script>
+
+    <?php if ($this->session->userdata("night_mode") == TRUE) { ?>
+        <link rel="stylesheet" type="text/css" href="<?php echo no_protocol(base_url(design . "assets/css/dark.css?v=" . settings("refresh"))); ?>">
+    <?php } ?>
+
+
+
+
+    <?php if ($this->base->enable_inspectlet()) { ?>
+        <!-- Begin Inspectlet Asynchronous Code -->
+        <script type="text/javascript">
+            (function() {
+                window.__insp = window.__insp || [];
+                __insp.push(['wid', 1592420219]);
+                var ldinsp = function() {
+                    if (typeof window.__inspld != "undefined") return;
+                    window.__inspld = 1;
+                    var insp = document.createElement('script');
+                    insp.type = 'text/javascript';
+                    insp.async = true;
+                    insp.id = "inspsync";
+                    insp.src = ('https:' == document.location.protocol ? 'https' : 'http') + '://cdn.inspectlet.com/inspectlet.js?wid=1592420219&r=' + Math.floor(new Date().getTime() / 3600000);
+                    var x = document.getElementsByTagName('script')[0];
+                    x.parentNode.insertBefore(insp, x);
+                };
+                setTimeout(ldinsp, 0);
+            })();
+        </script>
+        <!-- End Inspectlet Asynchronous Code -->
+    <?php } ?>
+    <!-- Google Tag Manager -->
+    <script>
+        // (function(w, d, s, l, i) {
+        //     w[l] = w[l] || [];
+        //     w[l].push({
+        //         'gtm.start': new Date().getTime(),
+        //         event: 'gtm.js'
+        //     });
+        //     var f = d.getElementsByTagName(s)[0],
+        //         j = d.createElement(s),
+        //         dl = l != 'dataLayer' ? '&l=' + l : '';
+        //     j.async = true;
+        //     j.src =
+        //         'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
+        //     f.parentNode.insertBefore(j, f);
+        // })(window, document, 'script', 'dataLayer', 'GTM-KPKKX66');
+    </script>
+    <!-- End Google Tag Manager -->
+    <!-- Google Adsense  -->
+    <!-- <script data-ad-client="ca-pub-4526780313946236" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script> -->
+    <!-- End Google Adsense  -->
+
+
+    <!-- Google Auto Ads -->
+    <!-- <script data-ad-client="ca-pub-4526780313946236" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script> -->
+
+    <!-- End of Google Auto Ads -->
+    <!-- Global site tag (gtag.js) - Google Analytics MBRF -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-115061243-3"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+        gtag('js', new Date());
+
+        gtag('config', 'UA-115061243-3');
+    </script>
+
+
+
+
+
+    <!-- 
+    <script type="text/javascript">
+        var _userway_config = {
+            /* uncomment the following line to override default position*/
+            position: '5',
+            /* uncomment the following line to override default size (values: small, large)*/
+            size: 'large',
+            /* uncomment the following line to override default language (e.g., fr, de, es, he, nl, etc.)*/
+            /* language: 'en-US', */
+            /* uncomment the following line to override color set via widget (e.g., #053f67)*/
+            /* color: '#053f67', */
+            /* uncomment the following line to override type set via widget(1=person, 2=chair, 3=eye)*/
+            /* type: '1', */
+            /* uncomment the following line to override support on mobile devices*/
+            mobile: true,
+            account: 'l7HSVCedrW'
+        };
+    </script>
+    <script type="text/javascript" src="https://cdn.userway.org/widget.js"></script>
+ -->
+
+    <!-- very important -->
+    <script>
+        var base_url = "<?php echo base_url(); ?>";
+        var front_base = "<?php echo front_base; ?>";
+        var engine_base = "<?php echo engine_base; ?>";
+        var application_folder = "<?php echo APPFOLDER; ?>";
+        var style_folder = "<?php echo style; ?>";
+        var csrf_token = "<?php echo $this->security->get_csrf_hash(); ?>";
+        var plz_fill_all = "<?php echo word("plz_fill_all") ?>";
+        var plz_accept_terms = "<?php echo word("plz_accept_terms") ?>";
+        var captcha_enabled = <?php echo settings('enable_recaptcha') == 1 ? "true" : "false"; ?>;
+        var seg_1 = '<?php echo segment(1); ?>';
+        var error_cant_send_now = "<?php echo word("error_cant_send_now") ?>";
+
+        var word = {};
+        word.all = "<?php echo word("all") ?>";
+        word.no_of_choices = "<?php echo word("no_of_choices") ?>";
+
+        word.onesingnal_message = "<?php echo word("onesingnal_message") ?>";
+        word.onesingnal_ok = "<?php echo word("onesingnal_ok") ?>";
+        word.onesingnal_cancel = "<?php echo word("onesingnal_cancel") ?>";
+        word.onesingnal_wlcm_title = "<?php echo word("onesingnal_wlcm_title") ?>";
+        word.onesingnal_wlcm_msg = "<?php echo word("onesingnal_wlcm_msg") ?>";
+        word.onesingnal_wlcm_url = "<?php echo word("onesingnal_wlcm_url") ?>";
+    </script>
+
+
+    <?php if ($this->session->userdata("disableOneSignal") !== TRUE) { ?>
+        <link rel="manifest" href="<?php echo base_url("assets/libs/onesignal/manifest.json") ?>" />
+        <script src="https://cdn.onesignal.com/sdks/OneSignalSDK.js" async=""></script>
+        <script src="<?php echo base_url("assets/libs/onesignal/config.js?v=" . settings('refresh')) ?>" async=""></script>
+    <?php } ?>
+
+    <link rel="icon" href="/favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1">
+
+    <!-- Go to www.addthis.com/dashboard to customize your tools -->
+    <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5f05428dc9ffa0e5"></script>
+
+</head>
+
+<body>
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KPKKX66" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
+    <!-- Modal -->
+    <div class="modal fade" id="onesingnal_modal" tabindex="-1" role="dialog" aria-labelledby="onesingnal_modal" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <?php echo word("onesingnal_message") ?>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" id="disableOneSignal" data-dismiss="modal"><?php echo word("onesingnal_cancel") ?></button>
+                    <button type="button" class="btn btn-primary" id="enableOneSignal" data-dismiss="modal"><?php echo word("onesingnal_ok"); ?></button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <?php if (@$site_contents["widgets"]["popup"]) { ?>
+        <?php
+        $data = array(
+            "popup" => $site_contents["widgets"]["popup"][0]
+        );
+        ?>
+        <?php $this->load->view(style . '/templates/home/parts/popup_widget', $data);   ?>
+    <?php } ?>
+
+
+    <div class="modal fade" id="nice_alert" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <button type="button" class="btn btn-close btn-danger btn-xs" data-dismiss="modal" aria-label="Close"> <i class="fa fa-times"></i> </button>
+                <div class="modal-body">
+
+                    <div class="media mt-3">
+                        <div class="align-self-start image-container">
+                            <i class="fas alert-icon fa-2x"></i>
+                        </div>
+                        <div class="media-body">
+                            <div class="alert-text nice_font"></div>
+                        </div>
+                    </div>
+
+                    <div class="nice_alert_errors">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <?php if ($flash = @$this->session->userdata("flash")) { ?>
+        <script>
+            $(document).ready(function() {
+                nice_alert('<?php echo $flash["type"] ?>', '<?php echo $flash["msg"]; ?>');
+            });
+        </script>
+    <?php } ?>
+
+    <?php if (@$this->session->userdata("hide_disclaimer") == 0) { ?>
+        <div id="disclaimer" class="alert alert-dismissible fade show" role="alert">
+            <div class="alert m-0 rounded-0 border-0" id="alert-disclaimer">
+                <div class="container">
+                    <small><i class="fa fa-info-circle text-info"></i> <?php echo word("cookies_alert") ?></small>
+                </div>
+            </div>
+            <div class="jumbotron jumbotron-fluid">
+                <div class="overlay">
+                    <div class="container">
+                        <h1 class="display-6">
+                            <span><?php echo word("welcome_msg") ?></span>
+                        </h1>
+                        <p class="lead">
+                            <span><?php echo word("welcome_des") ?></span>
+                        </p>
+                        <p class="text-warning cookies">
+                            <span><?php echo word("welcome_request") ?></span>
+                        </p>
+                        <button class="btn btn-primary" id="hide_disclaimer" data-dismiss="alert" aria-label="Close" role="button"><?php echo word("hide_msg") ?></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script>
+            $(document).ready(function() {
+                $("#disclaimer").slideDown();
+            });
+        </script>
+    <?php } ?>
+
+    <?php if ($hide_layout == FALSE) { ?>
+
+        <div class="container">
+
+            <?php if ($mobile_view == FALSE) { ?>
+
+                <nav class="navbar navbar-expand-lg navbar-light bg-light " id="top_nav">
+
+                    <div class="d-block d-lg-none" id="mobile_top_nav">
+                        <div class="row">
+                            <div class="col">
+
+                                <ul class="navbar-nav">
+
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="<?php echo base_url() ?>"><i class="fa fa-home"></i></a>
+                                    </li>
+
+                                    <li class="nav-item">
+                                        <?php if (logged_in) { ?>
+                                            <a class="nav-link" href="<?php echo base_url(front_base . "dashboard") ?>"><i class="fa fa-book"></i></a>
+                                        <?php } else { ?>
+                                            <a class="nav-link" href="<?php echo base_url(front_base . "login") ?>"><i class="fa fa-lock"></i></a>
+
+                                        <?php } ?>
+                                    </li>
+
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="<?php echo base_url(front_base . "search/advanced") ?>"><i class="fa fa-search"></i></a>
+                                    </li>
+
+
+                                </ul>
+                            </div>
+
+                            <div class="col-auto">
+
+                                <ul class="navbar-nav">
+
+                                    <li class="nav-item">
+                                        <?php if ($this->session->userdata("night_mode") == TRUE) { ?>
+                                            <a class="nav-link" href="<?php echo base_url(front_base . "lights/off") ?>"><i class="fa fa-sun"></i></a>
+                                        <?php } else { ?>
+                                            <a class="nav-link" href="<?php echo base_url(front_base . "lights/on") ?>"><i class="fa fa-moon"></i></a>
+                                        <?php } ?>
+                                    </li>
+
+                                </ul>
+
+                            </div>
+
+                            <div class="col-auto">
+
+                                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#top_nav_collapsable" aria-controls="top_nav_collapsable" aria-expanded="false">
+                                    <i class="fa fa-bars"></i>
+                                </button>
+
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="collapse navbar-collapse" id="top_nav_collapsable">
+
+                        <ul class="navbar-nav">
+                            <?php foreach ($site_contents["nav"]["top_links"] as $c) { ?>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="<?php echo base_url($c->content_rel_url1); ?>"><i class="fa fa-caret-<?php echo OppAlign; ?>"></i> <?php echo word($c->content_rel_title1); ?></a>
+                                </li>
+                            <?php } ?>
+                        </ul>
+
+                        <ul class="navbar-nav <?php echo MyAlign; ?> my-2 my-lg-0 ">
+
+                            <li class="nav-item d-none d-md-block night-mode">
+                                <?php if ($this->session->userdata("night_mode") == TRUE) { ?>
+                                    <a class="nav-link" href="<?php echo base_url(front_base . "lights/off") ?>"><i class="fa fa-sun"></i></a>
+                                <?php } else { ?>
+                                    <a class="nav-link" href="<?php echo base_url(front_base . "lights/on") ?>"><i class="fa fa-moon"></i></a>
+                                <?php } ?>
+                            </li>
+
+                            <?php if (logged_in) { ?>
+
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle" href="<?php echo base_url(front_base . "profile") ?>" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <?php echo word("welcome_msg") ?> <?php echo fullname; ?>
+                                    </a>
+                                    <div class="dropdown-menu dropdown-menu-<?php echo MyAlign; ?>" aria-labelledby="navbarDropdown">
+                                        <a class="dropdown-item" href="<?php echo base_url(front_base . "cart") ?>">
+                                            <i class="fa fa-shopping-basket"></i> <?php echo word("cart") ?>
+                                        </a>
+                                        <a class="dropdown-item" href="<?php echo base_url(front_base . "orders") ?>">
+                                            <i class="fa fa-shopping-bag"></i> <?php echo word("orders") ?>
+                                        </a>
+                                        <a class="dropdown-item" href="<?php echo base_url(front_base . "payments") ?>">
+                                            <i class="fa fa-receipt"></i> <?php echo word("payments") ?>
+                                        </a>
+                                        <a class="dropdown-item" href="<?php echo base_url(front_base . "orders/purchases") ?>">
+                                            <i class="fa fa-cubes"></i> <?php echo word("purchases") ?>
+                                        </a>
+                                        <a class="dropdown-item" href="<?php echo base_url(front_base . "profile") ?>">
+                                            <i class="fa fa-user"></i> <?php echo word("my_profile") ?>
+                                        </a>
+                                        <a class="dropdown-item" href="<?php echo base_url(front_base . "dashboard") ?>">
+                                            <i class="fa fa-book"></i> <?php echo word("my_library") ?>
+                                        </a>
+                                    </div>
+                                </li>
+
+                            <?php } else { ?>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="<?php echo base_url(front_base . "login") ?>"><i class="fa fa-lock"></i> <?php echo word("login") ?></a>
+                                </li>
+                                <li class="nav-item">
+                                    <?php if (logged_in) { ?>
+
+                                        <a href="<?php echo base_url(front_base . "logout") ?>" class="btn btn-danger no-shadow rounded-0"><?php echo word("logout") ?></a>
+
+                                    <?php } else { ?>
+                                        <a href="<?php echo base_url(front_base . "join") ?>" class="btn btn-info no-shadow rounded-0"><?php echo word("register") ?></a>
+                                    <?php } ?>
+                                </li>
+                                <li class='nav-item'>
+                                    <div class="mt-2">
+                                        <?php if (free_access) { ?>
+                                            <a href="<?php echo base_url("free-access") ?>" class="btn btn-light no-shadow btn-sm rounded-0"><?php echo word("free_access") ?>: <b class="text-success"><?php echo word("active") ?></b></a>
+                                        <?php } else { ?>
+                                            <a href="<?php echo base_url("free-access") ?>" class="btn btn-light no-shadow btn-sm rounded-0"><?php echo word("activate_free_access") ?></a>
+                                        <?php } ?>
+                                    </div>
+                                </li>
+                                <li class='nav-item'>
+                                    <?php if (locale == "ar") { ?>
+                                        <a class="btn btn-lang no-shadow rounded-0" href="<?php echo base_url(front_base . "locale/en") ?>">EN</a>
+                                    <?php } else { ?>
+                                        <a class="btn btn-lang no-shadow rounded-0" href="<?php echo base_url(front_base . "locale/ar") ?>">عربي</a>
+                                    <?php } ?>
+
+                                    <a href="<?php echo base_url("cart") ?>" class="btn btn-success no-shadow rounded-0"><i class="fa fa-shopping-basket"></i> <span id="cart_count"><?php echo cart_count ? cart_count : ""; ?></span></a>
+
+                                </li>
+
+                            <?php } ?>
+                        </ul>
+
+
+                    </div>
+
+                </nav>
+
+            <?php } ?>
+
+
+            <div id="clear_header">
+
+                <div class="row">
+
+                    <div class="col-md-12 col-lg-3">
+                        <div class="header_tools mt-3 text-center text-lg-<?php echo MyAlign; ?> mx-auto  mb-3 mb-lg-0">
+                        <a href="https://mbrf.ae" target="_blank" alt='مؤسسة محمد بن راشد آل مكتوم للمعرفة'>
+                             <img src="https://mbrf.ae/storage/app/public/uploads/logo/KV64MQmAHQCx6CTc6SkrpG2NObuGBpnKwH9jET5k.png" class="img-fluid logo">              
+                        </a>
+                        </div>
+                    </div>
+
+
+                    <div class="col-md-12 col-lg-6 text-center ">
+                        <div class="logo_box">
+                            <a href="https://docs.google.com/forms/d/e/1FAIpQLSc9Nk4YcmopLSWKCkYJ7ksc8SwbdjWsMY8AyfDhGM7_fNrwiA/viewform" target="_blank">
+                                <img class="img-fluid logo" src="<?php echo base_url("assets/images/ads/games_banner.jpg") ?>" />
+                            </a>
+
+                        </div>
+                    </div>
+
+
+                    <div class="col-md-12 col-lg-3 text-center text-lg-<?php echo OppAlign; ?>">
+                        <div class="logo_box text-center text-lg-<?php echo OppAlign; ?>">                     
+                            <a href="<?php echo base_url(); ?>">
+                            <img class="img-fluid logo" style="height: 65px;" src="<?php echo base_url("assets/images/logos/logo_transparent.png") ?>" />
+                        </a>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    <?php } ?>
+
+
+
+    <?php if (isset($_GET["mobile_view"])) { ?>
+        <script>
+            $(document).ready(function() {
+                $(function() {
+                    $("a").attr('href', function(i, h) {
+                        return h + (h.indexOf('?') != -1 ? "&mobile_view=1" : "?mobile_view=1");
+                    });
+                });
+            });
+        </script>
+    <?php } ?>

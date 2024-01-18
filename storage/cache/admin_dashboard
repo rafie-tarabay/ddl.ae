@@ -1,0 +1,1 @@
+a:3:{s:4:"time";i:1705484158;s:3:"ttl";i:7200;s:4:"data";a:1:{s:4:"data";a:1:{s:8:"counters";a:4:{s:6:"access";a:1:{s:9:"to_expire";a:3:{s:3:"ips";i:1;s:9:"countries";i:0;s:6:"tokens";i:0;}}s:8:"requests";i:0;s:7:"authors";i:0;s:10:"corporates";i:0;}}}}

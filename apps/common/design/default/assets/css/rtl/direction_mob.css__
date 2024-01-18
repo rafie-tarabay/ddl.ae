@@ -1,0 +1,90 @@
+@media (max-width: 991.98px) {
+    
+    #cats-navbar ul.navbar-nav{
+        padding:0px;
+        margin:0px;
+        display: block !important;
+    }
+    #cats-navbar li.nav-item{
+        padding:0px;
+        margin:0px;
+        display: inline-block !important;
+        text-align: center !important;
+    }
+    #cats-navbar li.nav-item a{
+        display: inline-block !important;
+        padding:5px;
+    }    
+    
+    #mobile_top_nav ul.navbar-nav{
+        display: block !important;
+        text-align: right;
+    }
+    #mobile_top_nav li.nav-item{
+        display: inline-block !important;
+        text-align: center !important;
+    }    
+    #mobile_top_nav .navbar-toggler{
+        margin-top: 5px;
+    }
+    
+    .header_tools * , #header_tools > div{
+      
+    }
+    
+    .header_tools{
+        margin-top: 5px !important;
+    }
+    
+    .header_tools .btn{
+        padding:5px;
+    }    
+    
+    .logo_box {
+        margin:15px 0 5px 0 !important;
+    }
+    
+    
+    #advanced_form #search_box .basic-addon{
+        
+    }
+    
+    #advanced_form .form-control-lg, 
+    #advanced_form .input-group-lg > .form-control, 
+    #advanced_form .input-group-lg > .input-group-append > .btn, 
+    #advanced_form .input-group-lg > .input-group-append > .input-group-text, 
+    #advanced_form .input-group-lg > .input-group-prepend > .btn, 
+    #advanced_form .input-group-lg > .input-group-prepend > .input-group-text {
+        padding: 10px 8px 10px 8px;
+       
+    }    
+    
+    
+}
+
+@media (max-width: 767.98px) {
+
+    .media.media-responsive{
+      
+    }
+
+    .media.media-responsive img{
+        display: block !important;
+        float:none !important;
+        margin-left:auto !important;
+        margin-right:auto !important;
+        position: relative !important;     
+    }
+
+    .media.media-responsive .media-body{
+        display: block !important;
+        float:none !important;
+        position: relative !important;   
+    }
+
+    .small_mobile .pagging .page-item a{
+        padding: 8px 4px;
+        display: block;
+    }   
+    
+}

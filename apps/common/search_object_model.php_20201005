@@ -1,0 +1,974 @@
+<?php
+
+class Search_object_model extends base{
+    public function set_objects($docs){
+        $objects = array();
+        foreach($docs as $doc){
+            if($doc["similar"]){
+                foreach($doc["similar"] as $index => $similar){
+                    $doc["similar"][$index] = new SearchObject($similar);
+                }
+            }
+            $objects[] = new SearchObject($doc);
+        }
+        return $objects;
+    }
+}
+
+
+
+class SearchObject extends base{
+
+    public $metadata = null;
+
+    function __construct($metadata,$API_mode=FALSE){
+        $this->metadata = $metadata;
+    }
+
+
+    public function hasData(){
+        return (@$this->metadata != null);
+    }
+
+    public function hasSimilar(){
+        return $this->metadata["similar"] ? TRUE : FALSE;
+    }
+    public function getSimilar(){
+        return $this->metadata["similar"];
+    }
+
+    public function getId(){
+        return $this->metadata["biblo_id"];
+    }
+
+    public function getbibloTypeId(){
+        return $this->metadata["biblo_type_id"];
+    }
+
+    public function getbibloType(){
+        return $this->metadata["biblo_type"];
+    }
+
+    public function getbibloTypeLink($lang = locale){
+        $id = $this->getbibloTypeId();
+        $text = $this->getbibloType();
+        $text = $lang == "ar" ? $text["ar"] : $text["en"];
+        return '<a href="'.base_url(front_base.'search/results/?bibs='.$id).'">'.$text.'</a>';
+    }
+
+
+    public function getTitle(){
+        $title = $this->metadata["title"];
+        $title = clean_title_chars($title);
+        $title = trim($title);
+        $title = trim($title,'/');
+        $title = trim($title, '\/');
+        return $title;
+    }
+
+    public function getPrice(){
+        return $this->metadata["price"];
+    }
+
+    public function hasAttachments(){
+        $files = $this->metadata["files"];
+        $relatedfiles = $this->metadata["related_files"];
+        if($relatedfiles || $files["file_pdf"] || $files["file_epub"] || $files["file_msword"] || $files["file_video"] || $files["file_audio"]){
+            return TRUE;
+        }else{
+            return FALSE;
+        }
+    }
+
+    public function isFree(){
+        if( $this->hasAttachments() ){
+            return ((int)$this->getPrice() === 0);
+        }else{
+            return TRUE;
+        }
+    }
+
+
+    public function getFormattedPrice()
+    {
+        if ( $this->isFree() ){
+            return word("free");
+        }
+        $price = $this->getPrice();
+        return $this->getCurrencySymbol($this->getCurrency()).$price;
+    }
+
+    public function getReadingToken(){
+        return  'file_'.$this->getId().':'.md5($this->getId().mt_rand());
+    }
+
+    public function getCurrency(){
+        return "USD";
+    }
+
+    public function getFileCover($view = "full"){
+        $cover = @$this->metadata["files"]["file_cover"];
+
+
+         if($cover== null &&  $this->getbibloTypeId() == 7)//sound
+         {
+             $cover="//ddl.mbrf.ae/uploads/no_image/audio.jpg";
+         }
+         if($cover== null &&  $this->getbibloTypeId() == 8)//video
+         {
+             $cover="//ddl.mbrf.ae/uploads/no_image/video.jpg";
+         }
+
+
+
+        if ( $this->metadata["source_id"]=="39") //��� ����� �����
+        {
+            if($cover== null &&  $this->metadata["dewey"]["number"] !=null)
+            {
+                $imgname= substr( $this->metadata["dewey"]["number"],0,1);
+                $cover="//ddl.ae/uploads/no_image/".$imgname.".jpg";
+            }
+        }
+
+        return fetch_cover($cover,$view);
+    }
+
+    public function getHardcopyPrice(){
+        return $this->metadata["HardcopyPrice"];
+    }
+    public function hasBrowseFT(){
+        if( $this->metadata["BrowseFT"]=="1" ){
+            return TRUE;
+        }else{
+            return FALSE;
+        }
+    }
+
+
+    public function hasSubjects(){
+        return @$this->metadata["subjects"] ? TRUE : FALSE;
+    }
+    public function getSubjects(){
+        return $this->metadata["subjects"];
+    }
+    public function getSubjectsLinks(){
+        $subjectsTags = $this->getSubjects();
+        $links = array();
+        foreach($subjectsTags as $fields){
+            $fieldsLinks = array();
+            foreach($fields as $field){
+                $text = $field["text"];
+                $cleaned_text = urlencode(clean_keywords_chars($text));
+                $fieldsLinks[] = '<a href="'.base_url(front_base.'search/results/?queries=or|subjects|'.$cleaned_text).'">'.$text.'</a>';
+            }
+            if($fieldsLinks) $links[] = $fieldsLinks;
+        }
+        return $links;
+    }
+
+    public function getDewey(){
+        return $this->metadata["dewey"]["number"];
+    }
+
+    public function hasClassifications(){
+        return @$this->metadata["dewey"]["classifications"][1]["dewey_id"] ? TRUE : FALSE;
+    }
+    public function getClassifications(){
+        return $this->metadata["dewey"]["classifications"];
+    }
+    public function getClassificationsLinks(){
+        $Classifications = $this->getClassifications();
+        $i = 0;
+        $deweies = array();
+        $links = array();
+        foreach($Classifications as $Class){
+            $deweies[] = $Class["dewey_id"];
+            $deweies_link = "dewies=".join(";",$deweies);
+            $link  = '<p>';
+            //$link .= '<code>'.$Class["dewey_id"].'</code> ';
+            //$link .= '&nbsp;&nbsp;<i class="fa fa-caret-left text-info"></i> ';
+            $link .= '<a href="'.base_url(front_base.'search/results/?'.$deweies_link).'">'.$Class["title"].'</a>';
+            $link .= '</p>';
+            $links[] = $link;
+            $i++;
+        }
+        return join(" ",$links);
+    }
+
+
+
+
+    public function getURLquery(){
+        $query = $_SERVER['QUERY_STRING'];
+        parse_str($query , $query);
+        return $query;
+    }
+
+
+    public function hasSummary(){
+        return isset($this->metadata["summary"]);
+    }
+
+    public function getSummary(){
+        return $this->metadata["summary"];
+    }
+
+
+    public function hasCitation(){
+        return !empty($this->metadata["citation"]);
+    }
+
+    public function getCitation(){
+        return @json_decode($this->metadata["citation"],TRUE);
+    }
+
+
+
+    public function getContent(){
+        return $this->metadata["content"];
+    }
+
+    public function hasAuthor(){
+        return $this->metadata["author"]["author_id"] ? TRUE : FALSE;
+    }
+
+    public function getAuthor(){
+        return $this->metadata["author"];
+    }
+
+    public function getAuthorLink(){
+        $author = $this->getAuthor();
+        return '<a href="'.base_url(front_base.'search/results/?authors='.$author["author_id"]).'">'.$author["author"].'</a>';
+    }
+
+    public function hasCoAuthors(){
+        $cos = $this->metadata["coauthors"];
+        return count($cos) > 0 ? $cos : FALSE;
+    }
+
+    public function getCoAuthors(){
+        if($cats = $this->hasCoAuthors()){
+
+            $links = "<ul>";
+
+            foreach($cats as $cat){
+
+                $links .= "<li>";
+
+                $links .= ''.word($cat["title"]);
+
+                $links .= "<ul>";
+
+                foreach($cat["content"] as $co){
+                    $links .= "<li>";
+                    $links .= ''.$co["name"];
+                    $links .= "</li>";
+                }
+
+                $links .= "</ul>";
+
+                $links .= "</li>";
+            }
+
+            $links .= "</ul>";
+
+            return $links;
+        }else{
+            return FALSE;
+        }
+    }
+
+
+
+    public function hasPublisher(){
+        return $this->metadata["publisher"]["publisher_id"] ? TRUE : FALSE;
+    }
+
+    public function getPublisher(){
+        return $this->metadata["publisher"];
+    }
+
+    public function getPublisherLink(){
+        $publisher = $this->getPublisher();
+        return '<a href="'.base_url(front_base.'search/results/?publishers='.$publisher["publisher_id"]).'">'.$publisher["publisher"].'</a>';
+    }
+
+    public function hasPublicationCity(){
+        return $this->metadata["place"]["city_id"] ? TRUE : FALSE;
+    }
+
+    public function getPublicationCity(){
+        return $this->metadata["place"];
+    }
+
+    public function getPublicationCityLink(){
+        $city = $this->getPublicationCity();
+        return '<a href="'.base_url(front_base.'search/results/?cities='.$city["city_id"]).'">'.$city["publication_place"].'</a>';
+    }
+
+    public function hasPublicationYear(){
+        $year = $this->metadata["publication_year"];
+        return ($year && !is_null($year)) ? TRUE : FALSE;
+    }
+
+    public function getPublicationYear(){
+        $year = $this->metadata["publication_year"];
+        return $year;
+    }
+
+    public function getPublicationYearLink(){
+        $year = $this->getPublicationYear();
+        return '<a href="'.base_url(front_base.'search/results/?years='.$year).'">'.$year.'</a>';
+    }
+
+    public function getDeweyDecimal(){
+        return $this->metadata["dewey"]["number"];
+    }
+
+    public function hasLanguage(){
+        $lang = $this->metadata["language"];
+        return ($lang && !is_null($lang)) ? TRUE : FALSE;
+    }
+
+    public function getLanguage(){
+
+        if($this->hasLanguage()){
+            $lang = $this->metadata["language"];
+
+            $langs = $this->searcher->facets["langs"];
+
+            if(isset($langs[$lang])){
+                $lang_title = @$langs[$lang]["title"];
+            }else{
+                $langs = $this->search_gate->get_langs(locale,array($lang));
+                $lang_title = isset($langs[$lang]) ? $langs[$lang]  : $lang ;
+            }
+
+            return array(
+                "code" =>$lang,
+                "title" =>$lang_title,
+            );
+
+        }else{
+            return FALSE;
+        }
+    }
+
+
+    public function getLanguageLink(){
+        if( $this->hasLanguage() ){
+            $lang = $this->getLanguage();
+            return '<a href="'.base_url(front_base.'search/results/?langs='.$lang["code"]).'">'.$lang["title"].'</a>';
+        }else{
+            return FALSE;
+        }
+    }
+
+
+    public function getIsbn(){
+        $isbn = $this->metadata["ISBN"]["ISBN"];
+        return strlen($isbn) >= 8 ? $isbn : FALSE ;
+    }
+
+    public function getIssn(){
+        $issn = $this->metadata["ISBN"]["ISSN"];
+        return strlen($issn) >= 8 ? $issn : FALSE ;
+    }
+
+
+    public function hasRelatedFiles(){
+        $rf_local = @$this->metadata["related_files_loc"];
+        $rf = @$this->metadata["related_files"];
+        $rf = $rf_local ? $rf_local : $rf;
+        $rf = str_replace("'",'"',$rf);
+        $rf = str_replace("},]",'}]',$rf);
+        return strlen($rf) > 20 ? $rf : FALSE ;
+    }
+
+    public function protectRelatedFilesLink(){
+        if($files = $this->hasRelatedFiles()){
+
+            $js = json_decode($files,TRUE);
+            if($js){
+                $links = array();
+                foreach($js as $file){
+                    if(isset($file["url"])){
+                        $file_url = $this->get_file_url($file["url"]);
+                        $links[] = array(
+                            "title"=>$file["title"],
+                            "url"=>$file_url
+                        );
+                    }
+                }
+                $this->metadata["related_files"] = $links;
+            }
+
+        }else{
+            return FALSE;
+        }
+    }
+
+    public function getRelatedFilesLink()
+    { 
+        if (username=='FrontEndAdmin')
+        {
+            if ($files = $this->hasRelatedFiles()) 
+            {
+                $js = json_decode($files, TRUE);
+                $links = array(); 
+                foreach ($js as $file) 
+                {
+                    $type = $file["format_id"];
+                    $file_url_internal = $file["url"];
+
+                    if($type==8)
+                    {
+                        if (isset($file["title"]) && isset($file["url"])) 
+                        {
+                            $file_url = $this->get_file_url($file["url"]);
+                            $links[] = '<a target="_blank" href="' . $file_url_internal . '"><div class="d-flex align-items-center">'.
+                            '<i  class="fa fa-arrow-circle-down" style="font-size: 60px;padding: 5px;color: #189c18;
+                        }" aria-hidden="true"></i>'.
+                            '<div class="lh-100">'.
+                            '<h5 class="text mb-0 lh-100" style="color: #dc3545;">' . $this->AttachType($type) . '</h5>'.
+                            '<p class="mb-0 lh-100">' . $file["title"] . '</h5>'.
+                            '<p class="text mb-0 lh-100" style="color: #585856;">الملفات الخارجية ممكن أن تكون بصيغة ملف PDF أو ملف مضغوط</p>'.
+                            '</div>'.
+                            '</div>';
+                        }
+                    }
+                    else  if($type==5)
+                    {
+                        if (isset($file["title"]) && isset($file["url"])) 
+                        {
+                             $file_url = $this->get_file_url($file["url"]); 
+                            $splited_data = explode('?v=',$file["url"]); 
+                            if(strpos($splited_data[1],'&')>0)
+                            {
+                             $video_id = substr($splited_data[1],0,strpos($splited_data[1],'&'));
+                            }
+                            else{
+                                $video_id = $splited_data[1]; 
+                            } 
+                            $links[] = '<div class="embed-responsive embed-responsive-4by3">
+                            <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/'.$video_id.'?rel=0" allowfullscreen></iframe>
+                          </div>';
+                        }
+                    } 
+                    else
+                    {
+                        if (isset($file["title"]) && isset($file["url"])) {
+                            $file_url = $this->get_file_url($file["url"]);
+                            $links[] = '<a target="_blank" href="' . $file_url_internal . '"><div class="d-flex align-items-center">'.
+                            '<i  class="fa fa-arrow-circle-down" style="font-size: 60px;padding: 5px;color: #189c18;
+                        }" aria-hidden="true"></i>'.
+                            '<div class="lh-100">'.
+                            '<h5 class="text mb-0 lh-100" style="color: #dc3545;">' . $this->AttachType($type) . '</h5>'.
+                            '<p class="mb-0 lh-100">' . $file["title"] . '</h5>'.
+                            '</div>'.
+                            '</div>';
+                        }
+                    } 
+                }
+                return $links;
+            } 
+            else 
+            {
+                return FALSE;
+            }
+        } 
+        else {
+            // if ($files = $this->hasRelatedFiles()) {
+            //     $js = json_decode($files, TRUE);
+            //     $links = array();
+
+            //     foreach ($js as $file) {
+            //         $type = $file["format_id"];
+            //         if (isset($file["title"]) && isset($file["url"])) {
+            //             $file_url = $this->get_file_url($file["url"]);
+            //             $links[] = '<a target="_blank" href="' . $file_url . '">' . $file["title"] . '</a> <span class="badge">' . $this->AttachType($type) . '</span> ';
+            //         }
+            //     }
+            //     return $links;
+            // } else {
+            //     return FALSE;
+            // }
+            if ($files = $this->hasRelatedFiles()) 
+            {
+                $js = json_decode($files, TRUE);
+                $links = array(); 
+                foreach ($js as $file) 
+                {
+                    $type = $file["format_id"];
+                    $file_url_internal = $file["url"];
+
+                    if($type==8)
+                    {
+                        if (isset($file["title"]) && isset($file["url"])) 
+                        {
+                            $file_url = $this->get_file_url($file["url"]);
+                            $links[] = '<a target="_blank" href="' . $file_url_internal . '"><div class="d-flex align-items-center">'.
+                            '<i  class="fa fa-arrow-circle-down" style="font-size: 60px;padding: 5px;color: #189c18;
+                        }" aria-hidden="true"></i>'.
+                            '<div class="lh-100">'.
+                            '<h5 class="text mb-0 lh-100" style="color: #dc3545;">' . $this->AttachType($type) . '</h5>'.
+                            '<p class="mb-0 lh-100">' . $file["title"] . '</h5>'.
+                            '<p class="text mb-0 lh-100" style="color: #585856;">الملفات الخارجية ممكن أن تكون بصيغة ملف PDF أو ملف مضغوط</p>'.
+                            '</div>'.
+                            '</div>';
+                        }
+                    }
+                    else  if($type==5)
+                    {
+                        if (isset($file["title"]) && isset($file["url"])) 
+                        {
+                            $splited_data = explode('?v=',$file["url"]); 
+                            if(strpos($splited_data[1],'&')>0)
+                            {
+                             $video_id = substr($splited_data[1],0,strpos($splited_data[1],'&'));
+                            }
+                            else{
+                                $video_id = $splited_data[1]; 
+                            } 
+                            $links[] = '<div class="embed-responsive embed-responsive-4by3">
+                            <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/'.$video_id.'?rel=0" allowfullscreen></iframe>
+                          </div>';
+                        }
+                    } 
+                    else
+                    {
+                        if (isset($file["title"]) && isset($file["url"])) {
+                            $file_url = $this->get_file_url($file["url"]);
+                            $links[] = '<a target="_blank" href="' . $file_url_internal . '"><div class="d-flex align-items-center">'.
+                            '<i  class="fa fa-arrow-circle-down" style="font-size: 60px;padding: 5px;color: #189c18;
+                        }" aria-hidden="true"></i>'.
+                            '<div class="lh-100">'.
+                            '<h5 class="text mb-0 lh-100" style="color: #dc3545;">' . $this->AttachType($type) . '</h5>'.
+                            '<p class="mb-0 lh-100">' . $file["title"] . '</h5>'.
+                            '</div>'.
+                            '</div>';
+                        }
+                    } 
+                }
+                return $links;
+            } 
+            else 
+            {
+                return FALSE;
+            }
+        }
+    }
+
+
+    public function hasRelatedParts(){
+        $rp = $this->metadata["related_parts"];
+        return is_array($rp) && @count($rp) ?  $rp : $rp ;
+    }
+
+    public function getRelatedPartsLink(){
+        if($parts = $this->hasRelatedParts()){
+            $links = array();
+            foreach($parts as $part){
+                $p = array("label"=>"","text"=>"");
+                foreach($part as $part_data){
+                    if($part_data["subfield"] == "t"){
+                        $p["text"] = clean_keywords_chars($part_data["text"]);
+                    }elseif($part_data["subfield"] == "i"){
+                        $p["label"] = $part_data["text"];
+                    }
+                }
+                //prnt($p,FALSE);
+                if( $p["label"] && $p["text"] ){
+
+                    $source = $this->getSource();
+                    $author = $this->getAuthor();
+
+                    $params = array();
+
+                    $params[] =  'queries=or|title|'.$p["text"].';or|content|'.$this->getTitle().';';
+
+                    if($source){
+                        $params[] =  'sources='.$source["id"];
+                    }
+
+                    if($author){
+                        $params[] =  'authors='.$author["author_id"];
+                    }
+
+                    $links[] = '<a href="'.base_url(front_base."search/results/?". join("&",$params) ).'">'.$p["label"]." ".$p["text"].'</a>';
+                }
+            }
+            return $links;
+        }else{
+            return FALSE;
+        }
+    }
+
+
+
+    public function hasSeries(){
+        return trim($this->metadata["series"]);
+    }
+
+
+    public function getSeriesLink(){
+        if($series = $this->hasSeries()){
+            return '<a href="'.base_url(front_base."search/results/?queries=or|series|".urlencode($series)).'">'.$series.'</a>';
+        }else{
+            return FALSE;
+        }
+    }
+
+
+    public function getEdition(){
+        return trim($this->metadata["edition"]);
+    }
+
+
+
+    public function hasFiles(){
+        $files = $this->metadata["files"];
+        if( $files["file_pdf"] || $files["file_epub"] || $files["file_msword"] || $files["file_video"] || $files["file_audio"] ){
+            return $files;
+        }else{
+            return FALSE;
+        }
+    }
+
+
+    public function getFilesLink(){
+        if($files = $this->hasFiles()){
+
+            $links = array();
+            foreach($files as $type => $url){
+                if($type != "file_cover" && $url){
+                    $file_url = $this->get_file_url($url);
+                    if($file_url){
+                        $links[] = '<code>'.$this->AttachType($type).'</code> <a target="_blank" href="'.$file_url.'">'.word("download_file").'</a>';
+                    }
+                }
+            }
+
+            return $links;
+        }else{
+            return FALSE;
+        }
+    }
+
+    public function protectFilesLink(){
+        if($files = $this->hasFiles()){
+
+            $links = array("file_cover"=>$files["file_cover"]);
+            foreach($files as $type => $url){
+                if($type != "file_cover" && $url){
+                    $file_url = $this->get_file_url($url);
+                    if($file_url){
+                        $links[$type] =  $file_url;
+                    }
+                }
+            }
+
+            $this->metadata["files"] = $links;
+        }else{
+            return FALSE;
+        }
+    }
+
+    public function getFormatId(){
+        return $this->metadata["format_id"];
+    }
+
+    public function getFormattedFormat(){
+        $id = $this->getFormatId();
+        return $this->AttachType($id);
+    }
+
+
+
+
+    public function hasSource(){
+        $source = $this->metadata["source_id"];
+        return ($source && !is_null($source)) ? TRUE : FALSE;
+    }
+
+    public function getSource(){
+        if($this->hasSource()){
+            $source_id = $this->metadata["source_id"];
+
+            $sources = $this->searcher->facets["sources"];
+
+            if(isset($sources[$source_id])){
+                $source_title = @$sources[$source_id]["title"];
+            }else{
+                $sources = $this->search_gate->get_sources(locale,array($source_id));
+                $source_title = isset($sources[$source_id]) ? $sources[$source_id]  : $source_id ;
+            }
+
+            return array(
+                "id" =>$source_id,
+                "title" =>$source_title,
+            );
+        }else{
+            return FALSE;
+        }
+    }
+
+
+    public function getSourceLink(){
+        if( $this->hasSource() ){
+            $source = $this->getSource();
+            return '<a href="'.base_url(front_base.'search/results/?sources='.$source["id"]).'">'.$source["title"].'</a>';
+        }else{
+            return FALSE;
+        }
+    }
+
+
+
+
+    public function getNumberOfPages(){
+        $pages = $this->metadata["properties"]["pages"];
+        return $pages ? $pages : FALSE;
+    }
+    public function getNumberOfWords(){
+        $words = $this->metadata["properties"]["words"];
+        return $words ? $words : FALSE;
+    }
+    public function getReadingTime(){
+        $reading_time = $this->metadata["properties"]["reading_time"];
+        return $reading_time ? $reading_time : FALSE;
+    }
+
+
+    public function getRelatedSubjectId(){
+        return !is_null(@$this->metadata["subjects"][2])?
+        $this->metadata["subjects"][2]:$this->metadata["subjects"][1];
+    }
+
+    public function getFileDb(){
+        return $this->metadata["file_db"];
+    }
+
+    private function getCurrencySymbol($currency){
+        return '$';
+    }
+
+    public function getQuantity(){
+        return $this->quantity;
+    }
+
+    public function setQuantity($value){
+        $this->quantity = $value;
+        return $this;
+    }
+
+    public function getStock(){
+        return $this->stock;
+    }
+
+    public function isMediaProduct(){
+        $id = $this->getFormatId();
+        return ($id == Format_model::FORMAT_ID_AUDIO || $id == Format_model::FORMAT_ID_VIDEO);
+    }
+
+    public function isProductItemExists()
+    {
+        return $this->productItemExists;
+    }
+
+    public function setProductItemExists($productItemExists)
+    {
+        $this->productItemExists = $productItemExists;
+    }
+
+    public function hasLowStock(){
+        if ($this->outOfStock()){
+            return false;
+        }
+        return ($this->stock <= $this->lowStockLevel);
+    }
+
+    public function outOfStock(){
+        return ($this->stock === 0);
+    }
+
+    public function inStock(){
+        return ($this->stock >= 1);
+    }
+
+    public function hasStock($quantity){
+        return ($this->stock >= $quantity);
+    }
+
+    private function getFields(){
+        return FALSE;
+    }
+
+
+    public function getScore(){
+        return $this->metadata["score"];
+    }
+
+
+
+
+    private function AttachType($type_id){
+
+        $types = array(
+            "2" => word("file_msword"),
+            "file_msword" => word("file_msword"),
+
+            "3" => word("file_epub"),
+            "file_epub" => word("file_epub"),
+
+            "4" => word("file_pdf"),
+            "file_pdf" => word("file_pdf"),
+
+            "5" => word("file_video"),
+            "file_video" => word("file_video"),
+
+            "6" => word("file_audio"),
+            "file_audio" => word("file_audio"),
+
+            "7" => word("file_image"),
+            "file_image" => word("file_image"),
+
+            "8" => word("file_external"),
+            "file_external" => word("file_external"),
+        );
+        return isset($types[$type_id] ) ? $types[$type_id]  : $type_id ;
+    }
+
+
+    public function get_file_url($file_raw){
+
+        if (valid_url($file_raw) == FALSE  && filter_var($file_raw, FILTER_VALIDATE_URL) === FALSE) {
+
+            if(strpos($file_raw,"sources/source-") !== FALSE){
+                $base = 'https://ddl-downloads.sgp1.digitaloceanspaces.com/';
+            }else{
+                $base = 'https://ddl-storage-server.sgp1.digitaloceanspaces.com/localhosted/';
+            }
+            $url = $base.$file_raw;
+        }else{
+            $url = $file_raw;
+        }
+
+
+        ///// encryption Library ////
+        $this->load->library('encryption');
+        $params = array(
+            'cipher' => 'aes-256',
+            'mode' => 'ctr',
+            'key' => defined("encryption_key") ? encryption_key : "af5ecf59d0a8f4ae1d74d8c7155ba7b5"
+        );
+        $this->encryption->initialize($params);
+        ///// encryption Library ////
+
+        $string = $url."@#@".(time()+url_timeout)."@#@".$this->getId()."@#@".word_limiter($this->getTitle(),10,"..");
+
+        $file_encrypted = $this->encryption->encrypt($string);
+
+        $file_encrypted = base64_encode($file_encrypted);
+
+        return base_url(front_base."file/handler/?file=".$file_encrypted);
+
+    }
+
+
+    public function isPurchased($collection = FALSE){
+
+        if(u_id && logged_in){
+            $item_id = $this->getId();
+
+            if(active_packs){
+                if(in_array($item_id,packs_books)){
+                    return TRUE;
+                }
+            }
+
+            if($collection === FALSE || !is_array($collection)){
+                $ids = $this->shopping->get_purchased($item_id);
+                return in_array($item_id,$ids);
+            }else{
+                return isset($collection[$item_id]) ? $collection[$item_id] : FALSE;
+            }
+
+        }else{
+            return FALSE;
+        }
+    }
+
+    public function isFaved($collection = FALSE){
+        if(u_id && logged_in){
+            $item_id = $this->getId();
+            if($collection === FALSE && !is_array($collection)){
+                $this->db = $this->load->database('frontend', TRUE);
+                $this->db->where('fav_u_id',u_id);
+                $this->db->where('fav_item_id',$item_id);
+                $row = $this->db->limit(1)->get("social_favs")->row();
+                return $row;
+            }else{
+                return isset($collection[$item_id]) ? $collection[$item_id] : FALSE;
+            }
+        }else{
+            return FALSE;
+        }
+
+    }
+
+    public function isRated($collection = FALSE){
+        if(u_id && logged_in){
+            $item_id = $this->getId();
+            if($collection === FALSE && !is_array($collection)){
+                $this->db = $this->load->database('frontend', TRUE);
+                $this->db->where('rating_u_id',u_id);
+                $this->db->where('rating_item_id',$item_id);
+                $row = $this->db->limit(1)->get("social_ratings")->row();
+                return $row;
+            }else{
+                return isset($collection[$item_id]) ? $collection[$item_id] : FALSE;
+            }
+        }else{
+            return FALSE;
+        }
+
+    }
+
+    public function inCart(){
+        $cart = $this->config->item('cart');
+        if(!is_null($cart) && is_array($cart)){
+            return in_array($this->getId(),$cart) ? TRUE : FALSE;
+        }else{
+            return FALSE;
+        }
+    }
+
+    public function getParentId(){
+        $parent_id = $this->metadata["parent_bibliography_id"];
+        return is_null($parent_id) ? FALSE : $parent_id;
+    }
+
+    public function isJournal(){
+        return $this->getbibloTypeId() == 3 ? TRUE : FALSE;
+    }
+
+    public function hasIssues(){
+        $parent_id = $this->getParentId();
+
+        if(is_numeric($parent_id)){
+            $parent_id = (int) $parent_id;
+        }
+
+        return ( !is_null($parent_id) && $parent_id === 0 ) ? TRUE  : FALSE ;
+    }
+
+
+    public function isChapter(){
+        $parent_id = $this->getParentId();
+        return !$this->isJournal() && $parent_id ? TRUE : FALSE;
+    }
+
+
+
+}

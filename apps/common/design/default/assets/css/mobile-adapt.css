@@ -1,0 +1,103 @@
+
+@media (max-width: 575.98px) {
+
+    h5.card-title{
+        font-size:14px !important;
+    }
+    
+    .single_book img.cover{
+        max-width: 100% !important;
+    }    
+ 
+    
+}
+
+
+@media (max-width: 991.98px) {
+
+    #cats-navbar ul.navbar-nav{
+        
+    }
+    #cats-navbar li.nav-item{
+       
+        width:49% !important;
+   
+    }
+    #cats-navbar li.nav-item a{
+        font-size:12px;
+    }    
+    
+    #mobile_top_nav ul.navbar-nav{
+       
+    }
+    #mobile_top_nav li.nav-item{
+     
+        width:auto !important;
+      
+    }    
+    #mobile_top_nav .navbar-toggler{
+     
+    }
+    
+    .header_tools * , #header_tools > div{
+        display: inline-block !important;
+    }
+    
+    .header_tools{
+   
+    }
+    
+    .header_tools .btn{
+   
+        font-size: 12px;
+    }    
+    
+    .logo_box {
+        
+    }
+    
+    
+    #advanced_form #search_box .basic-addon{
+        font-size:12px;
+    }
+    
+    #advanced_form .form-control-lg, 
+    #advanced_form .input-group-lg > .form-control, 
+    #advanced_form .input-group-lg > .input-group-append > .btn, 
+    #advanced_form .input-group-lg > .input-group-append > .input-group-text, 
+    #advanced_form .input-group-lg > .input-group-prepend > .btn, 
+    #advanced_form .input-group-lg > .input-group-prepend > .input-group-text {
+      
+        font-size: 12px;
+    }    
+    
+    
+}
+
+@media (max-width: 767.98px) {
+
+    .media.media-responsive{
+        display: block !important;
+        width:100%;
+        max-width: 100%;
+        min-width: 100%;
+    }
+
+    .media.media-responsive img{
+           
+        max-width: 100%;
+    }
+
+    .media.media-responsive .media-body{
+        width:100% !important;
+        max-width: 100%;
+        min-width: 100%;     
+    }
+
+    .small_mobile .pagging .page-item a{
+        font-size: 11px;
+    }   
+    
+}
+
+

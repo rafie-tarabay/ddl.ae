@@ -1,0 +1,283 @@
+<div id="Browse_tabs" class="mt-sm-0 rounded-0">
+    <div class="nav nav-tabs row no-gutters   nice-font" id="nav-tabx" role="tablist">
+        <a class="col-6 nav-item nav-link active" data-toggle="tab" id="tab1_tab_toggler" href="#Browse_slider_tab1" role="tab" aria-controls="nav-Browse" aria-selected="false">
+            <div class="mytab"><?php echo ((OppAlign ==  "left")? 'التصفح' : 'Browse') ?>   </div>
+        </a>          
+        <a class="col-6 nav-item nav-link" data-toggle="tab" id="recent_tab_toggler" href="#Browse_slider_tab2" role="tab" aria-controls="nav-Collection" aria-selected="true">
+            <div class="mytab"> <?php echo ((OppAlign ==  "left")? 'المواد النوعية' : 'Special Collections') ?> </div>
+        </a>                      
+    </div>    
+    <div class="tab-content list-group-item rounded-0">
+        <div class="tab-pane fade  show active" id="Browse_slider_tab1" role="tabpanel" aria-labelledby="Browse-tab">
+
+
+
+            <div class="row" id="site_footer">
+                <div class="col-md">
+                    <b> <?php echo ((OppAlign ==  "left")? 'التصفح' : 'Browse') ?>   </b>
+                    <ul class="footer_links">
+                        <li>
+                            <a href="/search/subjects">
+                                <i class="fa fa-caret-<?php echo OppAlign; ?> text-info"></i> <?php echo ((OppAlign ==  "left")? ' الموضوعات' : 'Subjects') ?>  
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/browse?q=lang">
+                                <i class="fa fa-caret-<?php echo OppAlign; ?> text-info"></i> <?php echo ((OppAlign ==  "left")? 'اللغات' : 'Languages') ?>   
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/browse?q=source">
+                                <i class="fa fa-caret-<?php echo OppAlign; ?> text-info"></i> <?php echo ((OppAlign ==  "left")? 'المصادر' : 'Sources') ?>   
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/browse?q=publisher">
+                                <i class="fa fa-caret-<?php echo OppAlign; ?> text-info"></i>  الناشرين
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/search/authors">
+                                <i class="fa fa-caret-<?php echo OppAlign; ?> text-info"></i>  المؤلفين
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/browse?q=types">
+                                <i class="fa fa-caret-<?php echo OppAlign; ?> text-info"></i>  نوع المحتوي
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="col-md">
+                    <b>التوجهات </b>
+                    <ul class="footer_links">
+                        <li>
+                            <a href="/browse/trends?q=titles">
+                                <i class="fa fa-caret-<?php echo OppAlign; ?> text-info"></i>  العناويين الاكثر اطلاعاً
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/browse/trends?q=subjects">
+                                <i class="fa fa-caret-<?php echo OppAlign; ?> text-info"></i>  التصنيفات الاكثر اطلاعاً
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/browse/trends/guests">
+                                <i class="fa fa-caret-<?php echo OppAlign; ?> text-info"></i>  توجهات الزوار
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/browse/trends/users">
+                                <i class="fa fa-caret-<?php echo OppAlign; ?> text-info"></i>  توجهات المستخدمين
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/browse/keywords_cloud">
+                                <i class="fa fa-caret-<?php echo OppAlign; ?> text-info"></i>  سحابة كلمات البحث
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/search/subjectsCloud">
+                                <i class="fa fa-caret-<?php echo OppAlign; ?> text-info"></i> <?php echo ((OppAlign ==  "left")? 'سحابة الموضوعات المرئية' : 'Subjects words cloud') ?>  
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+
+
+
+        </div>
+        <div class="tab-pane fade" id="Browse_slider_tab2" role="tabpanel" aria-labelledby="Collection-tab">
+            <form method="get" action="/search/results/1">
+            <div class="row" style="padding:15px">
+                <div class="col-md"><b>تصفح المبادرات </b><br /><select size="11" class="col-md" name="sources">
+                        <option selected value="47;48;49;50;51;55;70"> جميع المبادرات  </option>
+                        <option value="47"> برنامج دبي الدولي للكتابة    </option>
+                        <option value="48"> ملتقى المتخصصين العرب </option>
+                        <option value="49"> مبادرة بالعربي </option>
+                        <option value="50"> قمة المعرفة  </option>
+                        <option value="51"> تحدي الامية </option>
+                        <option value="55"> بيت الشعر </option>
+                        <option value="70">  Knowledge4All </option>
+                        
+                       </select> </div>
+                <div class="col-md"><b>الموضوعات </b><br /><select size="11" class="col-md" name="dewies">
+                     <option selected value=""> جميع الموضوعات  </option>
+                    <option value="000"> علم الحاسوب، المعلومات، والأعمال العامة    </option>
+                    <option value="100"> الفلسفة والعلوم المتصلة                   </option>
+                    <option value="200"> الأديان                                    </option>
+                    <option value="300"> العلوم الاجتماعية                          </option>
+                    <option value="400"> اللغات                                    </option>
+                    <option value="500"> العلوم الطبيعية و الرياضيات               </option>
+                    <option value="600"> العلوم التطبيقية                          </option>
+                    <option value="700"> الفنون                                    </option>
+                    <option value="800"> الآداب                                     </option>
+                    <option value="900"> التاريخ والجغرافيا العامة                 </option>   
+                    </select> </div>
+                <div class="col-md">
+                        <b>السنوات   </b><br /><select size="7" class="col-md" name="years">
+                     <option selected value=""> جميع السنوات  </option>
+                                  <option value="2020"> 2020  </option>
+                                  <option value="2019"> 2019  </option>
+                                  <option value="2018"> 2018  </option>
+                                  <option value="2017"> 2017  </option>
+                                  <option value="2016"> 2016  </option>
+                                  <option value="2015"> 2015  </option>
+                                 </select>
+                <br /> 
+                                 <b>نوع المحتوي   </b><br /><select size="3" class="col-md" name="bibs">
+                     <option selected value=""> الجميع   </option>
+                                  <option value="4"> تقارير  </option>
+                                  <option value="8"> فيديو  </option>
+                               
+                                 </select>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md">
+                    <button type="submit" style="width:90%" class="btn btn-block btn-info mx-auto" id="search_btn">
+                        <i class="a fa fa-search"></i> بدأ التصفح
+                    </button>
+                </div>
+            </div>
+            </form>
+            <div class="row" id="site_footer">
+                <div class="col-md">
+                    <b>قوائم المجلات</b>
+
+                    <ul class="footer_links">
+                        <li>
+                            <a href="/search/journals?q=A">
+                                <i class="fa fa-caret-<?php echo OppAlign; ?> text-info"></i>  المجلات العربية
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/search/journals?q=E">
+                                <i class="fa fa-caret-<?php echo OppAlign; ?> text-info"></i>  مجلات اجنبية
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-md">
+                     <b>مؤسسات حكومية</b>
+                    <ul class="footer_links">
+                        <li>
+                            <a href="/search/results/1?sources=60">
+                                <i class="fa fa-caret-<?php echo OppAlign; ?> text-info"></i>  مركز حمدان بن محمد لإحياء التراث
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/search/results/1?sources=85">
+                                <i class="fa fa-caret-<?php echo OppAlign; ?> text-info"></i>  مواني دبي العالمية
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/search/results/1?sources=77">
+                                <i class="fa fa-caret-<?php echo OppAlign; ?> text-info"></i>  هيئة الموارد البشرية
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/search/results/1?sources=65">
+                                <i class="fa fa-caret-<?php echo OppAlign; ?> text-info"></i>  مركز محمد بن راشد للفضاء
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/search/results/1?sources=79">
+                                <i class="fa fa-caret-<?php echo OppAlign; ?> text-info"></i>  معهد حوكمة - مركز دبي المالي 
+                            </a>
+                        </li>
+						<li>
+                            <a href="/search/results/1?sources=104">
+                                <i class="fa fa-caret-<?php echo OppAlign; ?> text-info"></i>   المجلس الاعلى للطاقة
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="col-md">
+                    <b>مؤسسات حكومية</b>
+                    <ul class="footer_links">
+                   
+                        <li>
+                            <a href="/search/results/1?sources=95">
+                                <i class="fa fa-caret-<?php echo OppAlign; ?> text-info"></i>  وزارة المالية
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/search/results/1?sources=92">
+                                <i class="fa fa-caret-<?php echo OppAlign; ?> text-info"></i>  اكاديمية شرطة دبي
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/search/results/1?sources=90">
+                                <i class="fa fa-caret-<?php echo OppAlign; ?> text-info"></i>  كلية الدراسات العليا - شرطة دبي
+                            </a>
+                        </li>
+						
+						<li>
+                            <a href="/search/results/1?sources=84">
+                                <i class="fa fa-caret-<?php echo OppAlign; ?> text-info"></i>   سلطة مدينة دبي الملاحية
+                            </a>
+                        </li>
+						
+						<li>
+                            <a href="/search/results/1?sources=91">
+                                <i class="fa fa-caret-<?php echo OppAlign; ?> text-info"></i>   اللجنة العليا للتشريعات في دبي
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/search/results/1?sources=102">
+                                <i class="fa fa-caret-<?php echo OppAlign; ?> text-info"></i>   معهد دبي العقاري
+                            </a>
+                        </li>
+
+                    </ul>
+                </div>
+
+
+
+
+
+
+            </div>
+
+
+        </div>   
+    </div>
+</div>
+<br />
+<!--     Original Tabs             -->
+
+<div id="books_tabs" class="mt-sm-0 rounded-0">
+    <div class="nav nav-tabs row no-gutters   nice-font" id="nav-tab" role="tablist">
+        <a class="col-6 nav-item nav-link " data-toggle="tab" id="featured_tab_toggler" href="#books_slider_featured" role="tab" aria-controls="nav-profile" aria-selected="false">
+            <div class="mytab">
+                <?php echo word("featured_books") ?>
+            </div>
+        </a>
+        <a class="col-6 nav-item nav-link active" data-toggle="tab" id="recent_tab_toggler" href="#books_slider_recent" role="tab" aria-controls="nav-home" aria-selected="true">
+            <div class="mytab">
+                <?php echo word("newly_released") ?>
+            </div>
+        </a>
+    </div>
+
+    <div class="tab-content list-group-item rounded-0">
+
+        <?php if($content["sliders"]["featured_books"]){ ?>
+        <div class="tab-pane fade " id="books_slider_featured" role="tabpanel" aria-labelledby="profile-tab">
+            <?php $this->load->view(style.'/templates/home/parts/books_slider',array( "slider_id"=>"featured" , "active"=>TRUE , "rating" => TRUE  , "books"=>$content["sliders"]["featured_books"] ) );   ?>
+        </div>
+        <?php } ?>
+
+        <?php if($content["sliders"]["recent_books"]){ ?>
+        <div class="tab-pane fade show active" id="books_slider_recent" role="tabpanel" aria-labelledby="home-tab">
+            <?php $this->load->view(style.'/templates/home/parts/books_slider',array( "slider_id"=>"recent" , "active"=>FALSE  , "rating" => FALSE , "books"=>$content["sliders"]["recent_books"] ) );   ?>
+        </div>
+        <?php } ?>
+
+    </div>
+</div>

@@ -1,0 +1,75 @@
+/*
+ * Droid Arabic Kufi (Arabic) http://www.google.com/fonts/earlyaccess
+ */
+@font-face {
+  font-family: 'Droid Arabic Kufi';
+  font-style: normal;
+  font-weight: 400;
+  src: url(droid_arabic_kufi/DroidKufi-Regular.eot);
+  src: url(droid_arabic_kufi/DroidKufi-Regular.eot?#iefix) format('embedded-opentype'),
+       url(droid_arabic_kufi/DroidKufi-Regular.woff2) format('woff2'),
+       url(droid_arabic_kufi/DroidKufi-Regular.woff) format('woff'),
+       url(droid_arabic_kufi/DroidKufi-Regular.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Droid Arabic Kufi';
+  font-style: normal;
+  font-weight: 700;
+  src: url(droid_arabic_kufi/DroidKufi-Bold.eot);
+  src: url(droid_arabic_kufi/DroidKufi-Bold.eot?#iefix) format('embedded-opentype'),
+       url(droid_arabic_kufi/DroidKufi-Bold.woff2) format('woff2'),
+       url(droid_arabic_kufi/DroidKufi-Bold.woff) format('woff'),
+       url(droid_arabic_kufi/DroidKufi-Bold.ttf) format('truetype');
+}
+
+/*
+ * Droid Arabic Naskh (Arabic) http://www.google.com/fonts/earlyaccess
+ */
+@font-face {
+  font-family: 'Droid Arabic Naskh';
+  font-style: normal;                          
+  font-weight: 400;
+  src: url(droid_naskh/DroidNaskh-Regular.eot);
+  src: url(droid_naskh/DroidNaskh-Regular.eot?#iefix) format('embedded-opentype'),
+       url(droid_naskh/DroidNaskh-Regular.woff2) format('woff2'),
+       url(droid_naskh/DroidNaskh-Regular.woff) format('woff'),
+       url(droid_naskh/DroidNaskh-Regular.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Droid Arabic Naskh';
+  font-style: normal;
+  font-weight: 700;
+  src: url(droid_naskh/DroidNaskh-Bold.eot);
+  src: url(droid_naskh/DroidNaskh-Bold.eot?#iefix) format('embedded-opentype'),
+       url(droid_naskh/DroidNaskh-Bold.woff2) format('woff2'),
+       url(droid_naskh/DroidNaskh-Bold.woff) format('woff'),
+       url(droid_naskh/DroidNaskh-Bold.ttf) format('truetype');
+}
+
+
+
+@font-face {
+  font-family: 'Dubai';
+  font-style: normal;
+  font-weight: 400;
+  src: url(dubai/DubaiW23-Regular.eot);
+  src: url(dubai/DubaiW23-Regular.eot?#iefix) format('embedded-opentype'),
+       url(dubai/DubaiW23-Regular.woff2) format('woff2'),
+       url(dubai/DubaiW23-Regular.woff) format('woff'),
+       url(dubai/DubaiW23-Regular.ttf) format('truetype');
+}
+
+
+@font-face {
+  font-family: 'Dubai';
+  font-style: normal;
+  font-weight: 700;
+  src: url(dubai/DubaiW23-Medium.eot);
+  src: url(dubai/DubaiW23-Medium.eot?#iefix) format('embedded-opentype'),
+       url(dubai/DubaiW23-Medium.woff2) format('woff2'),
+       url(dubai/DubaiW23-Medium.woff) format('woff'),
+       url(dubai/DubaiW23-Medium.ttf) format('truetype');
+}
+
+
+

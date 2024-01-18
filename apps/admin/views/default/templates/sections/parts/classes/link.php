@@ -1,0 +1,1 @@
+<a href="<?php echo @$fields["url"] ?>"><?php echo @$fields["title"] ? $fields["title"] : $fields["url"]; ?></a>

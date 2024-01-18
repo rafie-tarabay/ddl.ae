@@ -1,0 +1,310 @@
+<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+
+class Logs_db extends MY_Controller {
+
+    public function __construct() {
+        parent::__construct();
+        if(!logged_in ){ redirect(base_url(admin_base."admins/login")); exit; }
+        $this->db = $this->load->database("frontend",true);         
+        $this->logsDB = $this->load->database("logs",true);  
+    }    
+
+    public function index(){
+
+        if(can("view_logs_db")){
+
+            $data["views"]["content"] = 'logs_db/types';   
+            $data["data"]["title"] = "السجلات";
+
+            $this->load->view(style.'/templates/main/core',$data);   
+
+        }
+
+    }
+
+    public function downloads(){
+
+        if(can("view_logs_db")){
+
+            $count = $this->logsDB->count_all_results("downloads"); 
+
+            $per_page = 20;                                    
+            $pagination = $this->base->paginate_me($count,$per_page,"logs_db/downloads/",3);            
+
+            $this->logsDB->limit($per_page, $pagination["page"]); 
+            $this->logsDB->order_by("download_id","DESC");
+            $records = $this->logsDB->get("downloads")->result();
+
+            foreach($records as $record){
+                if(!is_null($record->download_u_id)){
+                    $this->db->select("u_id,u_fullname");
+                    $this->db->where("u_id",$record->download_u_id)->limit(1);
+                    $record->user = $this->db->get("users")->row();
+                }
+            }
+
+            $data["data"]["pagination"] = $pagination["links"];
+
+            $data["data"]["count"] = $count;
+            $data["data"]["records"] = $records;
+            $data["views"]["content"] = 'logs_db/downloads';   
+            $data["data"]["title"] = "السجلات | سجلات التحميل ";
+
+            $this->load->view(style.'/templates/main/core',$data);            
+
+        }
+    }
+
+
+    public function search(){
+
+        if(can("view_logs_db")){
+
+            $count = $this->logsDB->count_all_results("search"); 
+
+            $per_page = 30;                                    
+            $pagination = $this->base->paginate_me($count,$per_page,"logs_db/search/",3);            
+
+            $this->logsDB->limit($per_page, $pagination["page"]); 
+            $this->logsDB->order_by("log_id","DESC");
+            $records = $this->logsDB->get("search")->result();
+
+            $data["data"]["pagination"] = $pagination["links"];
+
+            $data["data"]["count"] = $count;
+            $data["data"]["records"] = $records;
+            $data["views"]["content"] = 'logs_db/search';   
+            $data["data"]["title"] = "السجلات | سجلات البحث ";
+
+            $this->load->view(style.'/templates/main/core',$data);            
+
+        }
+    }
+
+
+    public function remove_search_log(){
+
+        $keywords = trim($this->input->post("keywords"));
+        $field = $this->input->post("field");
+
+        if($field == "all"){
+            $this->logsDB->or_like("log_title_keywords",$keywords,"both");
+            $this->logsDB->or_like("log_author_keywords",$keywords,"both");
+            $this->logsDB->or_like("log_publisher_keywords",$keywords,"both");
+            $this->logsDB->or_like("log_content_keywords",$keywords,"both");
+            $this->logsDB->or_like("log_series_keywords",$keywords,"both");
+            $this->logsDB->or_like("log_subjects_keywords",$keywords,"both");
+        }else{
+            $this->logsDB->or_like($field,$keywords,"both");
+        }
+
+        $this->logsDB->delete("search");
+
+        redirect(base_url(admin_base."logs_db/search"));
+
+    }    
+
+
+
+
+    public function actions($users = 0){
+
+        if(can("view_logs_db")){
+
+            $table = $users ? "user_logs" : "guest_logs"; 
+
+            $count = $this->logsDB->count_all_results($table); 
+
+            $per_page = 30;                                    
+            $pagination = $this->base->paginate_me($count,$per_page,"logs_db/actions/$users/",4);            
+
+            $this->logsDB->limit($per_page, $pagination["page"]); 
+            $this->logsDB->order_by("log_id","DESC");
+            $records = $this->logsDB->get($table)->result();
+
+            $data["data"]["pagination"] = $pagination["links"];
+
+            $data["data"]["users"] = $users;
+            $data["data"]["count"] = $count;
+            $data["data"]["records"] = $records;
+            $data["views"]["content"] = 'logs_db/actions';   
+            $data["data"]["title"] = "السجلات | سجلات المستخدمين ";
+
+            $this->load->view(style.'/templates/main/core',$data);            
+
+        }
+    }
+
+
+
+
+
+
+
+
+    public function sources(){
+
+        if( $limit = can("view_sources") ){        
+
+            $sources = $this->cache->get("admin_sources_$limit");       
+            if ( !$sources ){                
+
+                if($limit != "all"){   
+                    $this->db->where("id",$limit);
+                }            
+                $sources = $this->db->order_by("title_ar","DESC")->get("sources")->result();
+
+                foreach($sources as $source){
+
+                    $this->logsDB->where("download_free_access",1);
+                    $source->count_free_access = $this->logsDB->where("download_source_id",$source->id)->count_all_results("downloads"); 
+
+                    $this->logsDB->where("download_purchased",1);
+                    $source->count_purchased = $this->logsDB->where("download_source_id",$source->id)->count_all_results("downloads"); 
+
+                    if($limit == "all"){
+                        $this->logsDB->where("download_free_material",1);
+                        $source->count_free_material = $this->logsDB->where("download_source_id",$source->id)->count_all_results("downloads"); 
+                        $source->count = $this->logsDB->where("download_source_id",$source->id)->count_all_results("downloads");      
+                    }
+
+                }
+                
+                $this->cache->save("admin_sources_$limit", $sources, 60*60*2);
+            }
+
+            $data["data"]["sources"] = $sources;
+            $data["views"]["content"] = 'logs_db/sources/list_sources';   
+            $data["data"]["title"] = "المصادر";
+            $this->load->view(style.'/templates/main/core',$data);           
+        }
+
+    }
+
+    public function source_statistics($source_id = 0){
+
+        if( $limit = can("view_sources") && in_array(can("view_sources") , array("all",$source_id))){        
+
+            $this->logsDB->where("download_free_access",1);
+            $count_free_access = $this->logsDB->where("download_source_id",$source_id)->count_all_results("downloads"); 
+
+            $this->logsDB->where("download_purchased",1);
+            $count_purchased = $this->logsDB->where("download_source_id",$source_id)->count_all_results("downloads"); 
+
+            if($limit != "all"){
+                $this->logsDB->group_start();
+                $this->logsDB->or_where("download_free_access",1);
+                $this->logsDB->or_where("download_purchased",1);                
+                $this->logsDB->group_end();
+            }
+            $count = $this->logsDB->where("download_source_id",$source_id)->count_all_results("downloads"); 
+
+            $per_page = 20;                                    
+            $pagination = $this->base->paginate_me($count,$per_page,"logs_db/source_statistics/$source_id/",4);            
+
+            $this->logsDB->limit($per_page, $pagination["page"]); 
+            $this->logsDB->order_by("download_id","DESC");
+            if($limit != "all"){
+                $this->logsDB->group_start();
+                $this->logsDB->or_where("download_free_access",1);
+                $this->logsDB->or_where("download_purchased",1);                
+                $this->logsDB->group_end();            
+            }
+            $records = $this->logsDB->where("download_source_id",$source_id)->get("downloads")->result();
+
+            foreach($records as $record){
+                if(!is_null($record->download_u_id)){
+                    $this->db->select("u_id,u_fullname");
+                    $this->db->where("u_id",$record->download_u_id)->limit(1);
+                    $record->user = $this->db->get("users")->row();
+                }
+            }
+
+            $data["data"]["pagination"] = $pagination["links"];
+
+            $data["data"]["count_free_access"] = $count_free_access;
+            $data["data"]["count_purchased"] = $count_purchased;
+            $data["data"]["records"] = $records;
+            $data["views"]["content"] = 'logs_db/sources/source_statistics';   
+            $data["data"]["title"] = "المصادر | احصائيات التحميلات ";
+
+            $this->load->view(style.'/templates/main/core',$data);  
+
+        }else{
+            redirect(base_url(admin_base));
+        }          
+
+    }
+
+
+    public function toggle_source($source_id,$disabled){
+
+        if( can("control_sources") ){        
+
+            $this->db->where("id",$source_id)->update("sources",array("disabled"=>$disabled));
+            redirect(base_url(admin_base."logs_db/sources"));
+
+        }else{
+            redirect(base_url(admin_base));
+        } 
+    }
+
+
+    
+    
+    public function refresh_source_revenues(){
+
+        $sources = $this->db->get("sources")->result();
+
+        foreach($sources as $source){
+            $this->db->select('rev_source_id');
+            $this->db->select_sum('rev_amount');            
+            $source_rev = $this->db->where("rev_source_id",$source->id)->get("sources_revenues")->row(); 
+
+            $source_data = array(
+                "revenues" => $source_rev->rev_amount ? $source_rev->rev_amount : 0,
+            );
+            $this->db->where("id",$source->id)->update("sources",$source_data);
+            
+            //prntf($this->db->last_query());
+            
+        }
+
+        redirect(base_url(admin_base."logs_db/sources/?xcache=1"));
+        
+    } 
+
+
+
+
+    public function top_viewed_books($table="users"){
+
+        $table = $table == "users" ? "user_logs" :"guest_logs" ;
+
+        $records = $this->cache->get("top_viewed_books_".$table);        
+        if ( !$records ){           
+
+            //SELECT count(`log_rel_id`) as `repeats` , `log_rel_id` FROM `ddl_user_logs` WHERE `log_action` = 'view_book' group by `log_rel_id` order by `repeats` DESC     
+            $this->logsDB->select("count(`log_rel_id`) as `repeats` , $table.*");
+            $this->logsDB->where("log_action","view_book");
+            $this->logsDB->group_by("log_rel_id")->order_by("repeats","DESC");
+            $records = $this->logsDB->limit(500)->get($table)->result();
+
+            $this->cache->save("top_viewed_books_".$table, $records, 60*60*24);
+
+            //prnt($this->logsDB->last_query());
+        }
+
+        $data["data"]["records"] = $records;
+        $data["views"]["content"] = 'logs_db/top_viewed_books';   
+        $data["data"]["title"] = "السجلات | الأكثر مشاهدة "; 
+        $this->load->view(style.'/templates/main/core',$data);         
+
+
+    }    
+
+
+
+
+
+}

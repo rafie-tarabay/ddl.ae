@@ -1,0 +1,1 @@
+<img class="img-fluid img-thumbnail" src="<?php echo $fields["url"] ?>" style="max-width: 200px;" />
